@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-expo-app@latest . --template blank)",
+      "Bash(npx create-expo-app@latest . --template blank --yes)",
+      "Bash(npx create-expo-app@latest . --template blank -f)",
+      "Read(//c/Users/Devan Chuyen Lee/Documents/**)",
+      "Bash(npx create-expo-app@latest gratitude-temp --template blank)",
+      "Bash(cp -r \"c:/Users/Devan Chuyen Lee/Documents/gratitude-temp/.\" \"c:/Users/Devan Chuyen Lee/Documents/Gratitude-App/\")",
+      "Bash(rm -rf \"c:/Users/Devan Chuyen Lee/Documents/gratitude-temp\")",
+      "Bash(npx expo *)",
+      "Bash(npm install *)"
+    ]
+  }
+}
