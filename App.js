@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react';
-import "./global.css";
 import { StatusBar } from 'expo-status-bar';
 import * as Notifications from 'expo-notifications';
 import { requestPermissions, scheduleDailyReminders } from './src/notifications/scheduler';

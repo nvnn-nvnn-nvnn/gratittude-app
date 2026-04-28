@@ -1,6 +1,3 @@
-// NativeWind
-import "./global.css";
-
 import React, { forwardRef } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -12,6 +9,8 @@ import HomeScreen from '../screens/HomeScreen';
 import GratitudePromptScreen from '../screens/GratitudePromptScreen';
 import HistoryScreen from '../screens/HistoryScreen';
 import StatsScreen from '../screens/StatsScreen';
+import TestScreen from '../screens/TestScreen';
+
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -45,6 +44,11 @@ function TabNavigator() {
         name="Stats"
         component={StatsScreen}
         options={{ tabBarIcon: ({ color }) => <Text style={{ fontSize: 20 }}>📊</Text> }}
+      />
+      <Tab.Screen
+        name="Shiot"
+        component={TestScreen}
+        options={{ tabBarIcon: ({ color }) => <Text style={{ fontSize: 20 }}>📖</Text> }}
       />
     </Tab.Navigator>
   );

@@ -84,7 +84,7 @@ export default function HomeScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F7F6FF' },
+  container: { flex: 1, backgroundColor: '#87CEEB' },
   content: { padding: 24, alignItems: 'center' },
   title: { fontSize: 32, fontWeight: '800', color: '#1a1a2e', marginTop: 20 },
   subtitle: { fontSize: 14, color: '#888', marginTop: 4, marginBottom: 32 },

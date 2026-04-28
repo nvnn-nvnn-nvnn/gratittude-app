@@ -87,7 +87,7 @@ export default function GratitudePromptScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#1a1a2e' },
+  container: { flex: 1, backgroundColor: '#87CEEB' },
   inner: { flex: 1, padding: 24, justifyContent: 'center' },
   closeBtn: { position: 'absolute', top: 20, right: 24 },
   closeText: { fontSize: 20, color: '#888' },

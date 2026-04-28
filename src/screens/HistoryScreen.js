@@ -59,7 +59,7 @@ export default function HistoryScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F7F6FF' },
+  container: { flex: 1, backgroundColor: '#87CEEB' },
   title: { fontSize: 28, fontWeight: '800', color: '#1a1a2e', margin: 24, marginBottom: 12 },
   list: { paddingHorizontal: 24, paddingBottom: 24 },
   card: {
