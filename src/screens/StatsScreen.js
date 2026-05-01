@@ -132,7 +132,7 @@ export default function StatsScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#87CEEB' },
+  container: { flex: 1, backgroundColor: '#A8C3D8' },
   content: { padding: 24 },
   title: { fontSize: 28, fontWeight: '800', color: '#1a1a2e', marginBottom: 20 },
   statsRow: { flexDirection: 'row', gap: 10, marginBottom: 20 },

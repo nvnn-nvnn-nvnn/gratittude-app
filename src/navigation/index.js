@@ -2,6 +2,9 @@ import React, { forwardRef } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from "@expo/vector-icons";
+
+
 import { Text } from 'react-native';
 
 
@@ -9,7 +12,7 @@ import HomeScreen from '../screens/HomeScreen';
 import GratitudePromptScreen from '../screens/GratitudePromptScreen';
 import HistoryScreen from '../screens/HistoryScreen';
 import StatsScreen from '../screens/StatsScreen';
-import TestScreen from '../screens/TestScreen';
+import ProfileScreen from '../screens/ProfileScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -33,22 +36,33 @@ function TabNavigator() {
       <Tab.Screen
         name="Home"
         component={HomeScreen}
-        options={{ tabBarIcon: ({ color }) => <Text style={{ fontSize: 20 }}>🏠</Text> }}
+        
+        options={{ tabBarIcon: ({ color }) => <Text style={{ fontSize: 20 }}>
+            <Ionicons name="home-outline" size={24} color="#393939" />
+        </Text> }}
+        
       />
       <Tab.Screen
-        name="History"
+        name="Journal"
         component={HistoryScreen}
-        options={{ tabBarIcon: ({ color }) => <Text style={{ fontSize: 20 }}>📖</Text> }}
+        options={{ tabBarIcon: ({ color }) => <Text style={{ fontSize: 20 }}>
+            <Ionicons name= "journal-outline" size={24} color="#393939" />
+        </Text> }}
       />
       <Tab.Screen
         name="Stats"
         component={StatsScreen}
-        options={{ tabBarIcon: ({ color }) => <Text style={{ fontSize: 20 }}>📊</Text> }}
+        options={{ tabBarIcon: ({ color }) => <Text style={{ fontSize: 20 }}>
+             <Ionicons name= "stats-chart-outline" size={24} color="#393939" />
+
+        </Text> }}
       />
       <Tab.Screen
-        name="Shiot"
-        component={TestScreen}
-        options={{ tabBarIcon: ({ color }) => <Text style={{ fontSize: 20 }}>📖</Text> }}
+        name="Profile"
+        component={ProfileScreen}
+        options={{ tabBarIcon: ({ color }) => <Text style={{ fontSize: 20 }}>
+           <Ionicons name= "person-outline" size={24} color="#393939" />
+        </Text> }}
       />
     </Tab.Navigator>
   );
@@ -67,8 +81,9 @@ const AppNavigator = forwardRef(function AppNavigator(props, ref) {
           name="GratitudePrompt"
           component={GratitudePromptScreen}
           options={{
-            presentation: 'modal',
+            presentation: 'transparentModal',
             headerShown: false,
+            animation: 'fade',
           }}
         />
       </Stack.Navigator>
