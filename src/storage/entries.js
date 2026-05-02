@@ -6,6 +6,12 @@ function generateId() {
   return `${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
 }
 
+
+
+function normalizeDate(d) {
+  return new Date(d).toISOString().split('T')[0];
+}
+
 export async function getEntries() {
   try {
     const raw = await AsyncStorage.getItem(KEY);
@@ -30,6 +36,14 @@ export async function getEntries() {
 
 export async function saveEntry(entry) {
   const entries = await getEntries();
+  const day = normalizeDate(entry.date);
+
+
+  if (entries.some(e => normalizeDate(e.date) === day)) {
+    throw new Error('ENTRY_EXISTS_FOR_DATE');
+  }
+
+
   entries.push({ id: generateId(), ...entry });
   await AsyncStorage.setItem(KEY, JSON.stringify(entries));
 }

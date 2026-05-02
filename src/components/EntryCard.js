@@ -1,43 +1,78 @@
-import React from 'react';
-import {
-  Text,
-  TouchableOpacity,
-  StyleSheet, 
-} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import ConfirmModal from './ConfirmModal';
 
-function EntryCard({ item, onPress }) {   // ← fixed: { item, onPress }
+function EntryCard({ item, onPress, onDelete }) {
+  const [confirmVisible, setConfirmVisible] = useState(false);
 
-  const date = new Date(item.date);
-  const label = date.toLocaleDateString('en-US', {
+  const [y, m, d] = item.date.split('-').map(Number);
+  const label = new Date(y, m - 1, d).toLocaleDateString('en-US', {
     weekday: 'short',
     month: 'short',
     day: 'numeric',
   });
 
+  function handleConfirm() {
+    setConfirmVisible(false);
+    onDelete?.();
+  }
+
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.75}>
-      <Text style={styles.dateLabel}>{label}</Text>
-      <Text style={styles.entryText} numberOfLines={3}>{item.text}</Text>
-      <Text style={styles.editHint}>Tap to edit</Text>
-    </TouchableOpacity>
+    <>
+      <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.75}>
+        <View style={styles.header}>
+          <Text style={styles.dateLabel}>{label}</Text>
+          <TouchableOpacity
+            onPress={() => setConfirmVisible(true)}
+            hitSlop={{ top: 8, right: 8, bottom: 8, left: 8 }}
+          >
+            <Ionicons name="trash-outline" size={16} color="#b0a090" />
+          </TouchableOpacity>
+        </View>
+        <Text style={styles.entryText} numberOfLines={3}>{item.text}</Text>
+      </TouchableOpacity>
+
+      <ConfirmModal
+        visible={confirmVisible}
+        title="Delete this reflection?"
+        message="This entry will be permanently removed. You can't undo this."
+        confirmLabel="Delete"
+        destructive
+        onCancel={() => setConfirmVisible(false)}
+        onConfirm={handleConfirm}
+      />
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    padding: 16,
+    backgroundColor: '#FAF6EC',
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: '#c8bc9e',
+    padding: 18,
     marginBottom: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 6,
-    elevation: 2,
   },
-  dateLabel: { fontSize: 11, fontWeight: '700', color: '#6C63FF', letterSpacing: 1, textTransform: 'uppercase', marginBottom: 6 },
-  entryText: { fontSize: 15, color: '#333', lineHeight: 22 },
-  editHint: { fontSize: 11, color: '#bbb', marginTop: 8, fontStyle: 'italic' },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  dateLabel: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#8a7a5c',
+    letterSpacing: 0.8,
+    textTransform: 'uppercase',
+  },
+  entryText: {
+    fontSize: 16,
+    color: '#1a1a2e',
+    lineHeight: 24,
+  },
 });
 
 export default EntryCard;

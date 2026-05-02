@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import  EntryCard  from '../components/EntryCard'
 import { Calendar } from 'react-native-calendars';
-import { getEntries, saveEntry } from '../storage/entries';
+import { getEntries, saveEntry, deleteEntry } from '../storage/entries';
 
 
 export default function JournalScreen({ navigation }) {
@@ -61,6 +61,12 @@ export default function JournalScreen({ navigation }) {
       console.error(err);
     }
   };
+
+  async function handleDelete(id) {
+    await deleteEntry(id);
+    load()
+  }
+
 
   const handleDayPress = (day) => {
     setSelectedDate(day.dateString);
@@ -136,6 +142,7 @@ export default function JournalScreen({ navigation }) {
             </TouchableOpacity>
           </View>
           <Calendar
+            maxDate={new Date().toISOString().split('T')[0]}
             markedDates={markedDates}
             onDayPress={handleDayPress}
             theme={{
@@ -173,7 +180,7 @@ export default function JournalScreen({ navigation }) {
 
             {/* Calendar Toggle */}
             <TouchableOpacity style={styles.calendarToggle} onPress={() => setShowCalendar(true)}>
-              <Text style={styles.calendarToggleText}>📅 View Calendar</Text>
+              <Text style={styles.calendarToggleText}>Journal Calendar 📅</Text>
             </TouchableOpacity>
 
             <Text style={styles.sectionHeader}>Previous Entries</Text>
@@ -189,6 +196,8 @@ export default function JournalScreen({ navigation }) {
           <EntryCard
             item={item}
             onPress={() => navigation.navigate('GratitudePrompt', { entry: item })}
+            onDelete={() => handleDelete(item.id)}
+            
           />
         )}
         contentContainerStyle={styles.list}
@@ -213,7 +222,7 @@ const styles = StyleSheet.create({
   // Prompt Card
   promptCard: {
     backgroundColor: '#fff',
-    borderRadius: 20,
+    borderRadius: 12,
     padding: 20,
     marginBottom: 16,
     shadowColor: '#000',
@@ -259,7 +268,7 @@ const styles = StyleSheet.create({
   calendarToggle: {
     backgroundColor: 'rgba(255,255,255,0.25)',
     padding: 14,
-    borderRadius: 12,
+    borderRadius: 8,
     alignItems: 'center',
     marginBottom: 20,
   },
@@ -273,8 +282,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     color: '#1a1a2e',
-    marginBottom: 12,
     opacity: 0.8,
+    paddingBottom: 10,
+    marginBottom: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(26,26,46,0.15)',
   },
 
   // Entry Cards
@@ -307,29 +319,58 @@ const styles = StyleSheet.create({
     padding: 24,
   },
   modalContent: {
-    backgroundColor: '#fff',
-    borderRadius: 24,
+    backgroundColor: '#FAF6EC',
+    borderWidth: 1,
+    borderColor: '#c8bc9e',
+    borderRadius: 6,
     padding: 28,
     width: '100%',
     maxWidth: 400,
   },
-  modalTitle: { fontSize: 22, fontWeight: '800', color: '#1a1a2e', marginBottom: 4 },
-  modalDate: { fontSize: 14, color: '#6C63FF', marginBottom: 16, fontWeight: '600' },
-  modalText: { fontSize: 16, color: '#333', lineHeight: 24, marginBottom: 20 },
-  modalHint: { fontSize: 15, color: '#888', lineHeight: 22, marginBottom: 20, fontStyle: 'italic' },
+  modalTitle: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#1a1a2e',
+    marginBottom: 4,
+  },
+  modalDate: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#8a7a5c',
+    letterSpacing: 0.8,
+    textTransform: 'uppercase',
+    marginBottom: 16,
+  },
+  modalText: {
+    fontSize: 16,
+    color: '#1a1a2e',
+    lineHeight: 24,
+    marginBottom: 20,
+  },
+  modalHint: {
+    fontSize: 15,
+    color: '#8a7a5c',
+    lineHeight: 22,
+    marginBottom: 20,
+    fontStyle: 'italic',
+  },
   modalActions: { flexDirection: 'row', gap: 12 },
   modalBtn: {
     flex: 1,
-    backgroundColor: '#6C63FF',
-    paddingVertical: 14,
-    borderRadius: 12,
+    backgroundColor: '#1a1a2e',
+    paddingVertical: 12,
+    borderRadius: 8,
     alignItems: 'center',
   },
-  secondaryBtn: { backgroundColor: '#f0f0f0' },
+  secondaryBtn: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: '#c8bc9e',
+  },
   modalBtnText: { color: '#fff', fontWeight: '700', fontSize: 15 },
-  secondaryBtnText: { color: '#333' },
+  secondaryBtnText: { color: '#1a1a2e' },
   closeBtn: { marginTop: 16, alignSelf: 'center' },
-  closeBtnText: { color: '#999', fontSize: 14 },
+  closeBtnText: { color: '#8a7a5c', fontSize: 14 },
 
   // Calendar Modal
   calendarModal: { flex: 1, backgroundColor: '#fff' },
