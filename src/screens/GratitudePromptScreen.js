@@ -15,6 +15,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { saveEntry, updateEntry, getEntries } from '../storage/entries';
 
 import { getRandomQuote } from '../constants/quotes';
+import { useTheme } from '../context/ThemeContext';
 
 const PROMPTS = [
   "What's one thing that made you smile today?",
@@ -30,6 +31,7 @@ function normalizeDate(dateInput) {
 }
 
 export default function GratitudePromptScreen({ route, navigation }) {
+  const { bgColor } = useTheme();
   const editingEntry = route?.params?.entry;
   const isEditing = !!editingEntry;
 
@@ -125,7 +127,7 @@ export default function GratitudePromptScreen({ route, navigation }) {
     : prompt;
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: bgColor }]}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1 }}
@@ -155,7 +157,7 @@ export default function GratitudePromptScreen({ route, navigation }) {
             <View style={styles.paper}>
               <TextInput
                 style={styles.input}
-                placeholder="I'm grateful for…"
+                placeholder="What are you grateful for today?"
                 placeholderTextColor="#bba88a"
                 multiline
                 value={text}
@@ -229,13 +231,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#c8bc9e',
     padding: 22,
-    minHeight: 620,
+    minHeight: 450,
     marginBottom: 20,
   },
   input: {
     fontSize: 18,
     color: '#1a1a2e',
-    minHeight: 540,
+    minHeight: 400,
     lineHeight: 28,
     padding: 0,
   },

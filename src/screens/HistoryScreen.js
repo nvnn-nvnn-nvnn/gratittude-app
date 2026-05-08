@@ -12,9 +12,11 @@ import {
 import  EntryCard  from '../components/EntryCard'
 import { Calendar } from 'react-native-calendars';
 import { getEntries, saveEntry, deleteEntry } from '../storage/entries';
+import { useTheme } from '../context/ThemeContext';
 
 
 export default function JournalScreen({ navigation }) {
+  const { bgColor } = useTheme();
   const [entries, setEntries] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [showPrompt, setShowPrompt] = useState(false);
@@ -39,7 +41,7 @@ export default function JournalScreen({ navigation }) {
   const todayDone = !!todayEntry;
 
   const markedDates = entries.reduce((acc, entry) => {
-    acc[entry.date] = { marked: true, dotColor: '#6C63FF' };
+    acc[entry.date] = { marked: true, dotColor: '#bb7c23' };
     return acc;
   }, {});
 
@@ -47,7 +49,7 @@ export default function JournalScreen({ navigation }) {
     markedDates[selectedDate] = {
       ...markedDates[selectedDate],
       selected: true,
-      selectedColor: '#6C63FF',
+      selectedColor: '#1C3A5C',
     };
   }
 
@@ -76,8 +78,8 @@ export default function JournalScreen({ navigation }) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      
+    <SafeAreaView style={[styles.container, { backgroundColor: bgColor }]}>
+
       {/* Daily Prompt Modal */}
       <Modal
         animationType="slide"
@@ -146,15 +148,27 @@ export default function JournalScreen({ navigation }) {
             markedDates={markedDates}
             onDayPress={handleDayPress}
             theme={{
-              todayTextColor: '#6C63FF',
-              arrowColor: '#6C63FF',
+              calendarBackground: '#FAF6EC',
+              dayTextColor: '#1C3A5C',
+              textDisabledColor: '#c8bc9e',
+              textSectionTitleColor: '#8a7a5c',
+              todayTextColor: '#bb7c23',
+              todayBackgroundColor: 'transparent',
+              selectedDayBackgroundColor: '#1C3A5C',
+              selectedDayTextColor: '#FAF6EC',
+              monthTextColor: '#1C3A5C',
+              textMonthFontWeight: '700',
+              textMonthFontSize: 16,
+              arrowColor: '#1C3A5C',
+              dotColor: '#bb7c23',
+              selectedDotColor: '#FAF6EC',
             }}
           />
         </SafeAreaView>
       </Modal>
 
       <FlatList
-        data={entries}
+        data={entries.slice(0,5)}
         keyExtractor={(item) => item.id ?? item.date}
         ListHeaderComponent={
           <View>
@@ -213,16 +227,16 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 48,
     fontWeight: '800',
-    color: 'white',
+    color: '#FAF6EC',
     fontFamily: 'DancingScript_700Bold',
-    marginTop: 24,
+    marginTop: 40,
     marginBottom: 16,
   },
 
   // Prompt Card
   promptCard: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
+    backgroundColor: '#FAF6EC',
+    borderRadius: 4,
     padding: 20,
     marginBottom: 16,
     shadowColor: '#000',
@@ -238,9 +252,11 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   promptLabel: {
-    fontSize: 13,
+    fontSize: 20,
     fontWeight: '700',
-    color: '#6C63FF',
+    // color: '#6C63FF',
+    color: '#000',
+    fontFamily: 'DancingScript_700Bold',
     letterSpacing: 1,
     textTransform: 'uppercase',
   },
@@ -248,40 +264,40 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
     paddingHorizontal: 10,
     paddingVertical: 4,
-    borderRadius: 12,
+    borderRadius: 4,
   },
   statusDone: { backgroundColor: '#d4edda' },
-  statusText: { fontSize: 11, fontWeight: '700', color: '#666' },
+  statusText: { fontSize: 11, fontWeight: '700', color: '#1C3A5C' },
   promptText: {
     fontSize: 16,
-    color: '#333',
+    color: '#1C3A5C',
     lineHeight: 24,
   },
   promptCta: {
     marginTop: 12,
     fontSize: 14,
     fontWeight: '700',
-    color: '#6C63FF',
+    color: '#8a7a5c',
   },
 
   // Calendar Toggle
   calendarToggle: {
     backgroundColor: 'rgba(255,255,255,0.25)',
     padding: 14,
-    borderRadius: 8,
+    borderRadius: 4,
     alignItems: 'center',
     marginBottom: 20,
   },
   calendarToggleText: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#1a1a2e',
+    color: '#1C3A5C',
   },
 
   sectionHeader: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#1a1a2e',
+    color: '#1C3A5C',
     opacity: 0.8,
     paddingBottom: 10,
     marginBottom: 12,
@@ -291,8 +307,8 @@ const styles = StyleSheet.create({
 
   // Entry Cards
   card: {
-    backgroundColor: '#fff',
-    borderRadius: 16,
+    backgroundColor: '#FAF6EC',
+    borderRadius: 4,
     padding: 16,
     marginBottom: 12,
     shadowColor: '#000',
@@ -301,14 +317,14 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 2,
   },
-  dateLabel: { fontSize: 11, fontWeight: '700', color: '#6C63FF', letterSpacing: 1, textTransform: 'uppercase', marginBottom: 6 },
-  entryText: { fontSize: 15, color: '#333', lineHeight: 22 },
-  editHint: { fontSize: 11, color: '#bbb', marginTop: 8, fontStyle: 'italic' },
+  dateLabel: { fontSize: 11, fontWeight: '700', color: '#8a7a5c', letterSpacing: 1, textTransform: 'uppercase', marginBottom: 6 },
+  entryText: { fontSize: 15, color: '#1C3A5C', lineHeight: 22 },
+  editHint: { fontSize: 11, color: '#8a7a5c', marginTop: 8, fontStyle: 'italic' },
 
   // Empty State
   empty: { paddingVertical: 60, alignItems: 'center' },
-  emptyText: { fontSize: 20, fontWeight: '700', color: '#888' },
-  emptySubtext: { fontSize: 14, color: '#999', marginTop: 8 },
+  emptyText: { fontSize: 20, fontWeight: '700', color: '#1C3A5C' },
+  emptySubtext: { fontSize: 14, color: '#5a5a6e', marginTop: 8 },
 
   // Modal
   modalOverlay: {
@@ -322,7 +338,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FAF6EC',
     borderWidth: 1,
     borderColor: '#c8bc9e',
-    borderRadius: 6,
+    borderRadius: 4,
     padding: 28,
     width: '100%',
     maxWidth: 400,
@@ -330,7 +346,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#1a1a2e',
+    color: '#1C3A5C',
     marginBottom: 4,
   },
   modalDate: {
@@ -343,7 +359,7 @@ const styles = StyleSheet.create({
   },
   modalText: {
     fontSize: 16,
-    color: '#1a1a2e',
+    color: '#1C3A5C',
     lineHeight: 24,
     marginBottom: 20,
   },
@@ -357,9 +373,9 @@ const styles = StyleSheet.create({
   modalActions: { flexDirection: 'row', gap: 12 },
   modalBtn: {
     flex: 1,
-    backgroundColor: '#1a1a2e',
+    backgroundColor: '#1C3A5C',
     paddingVertical: 12,
-    borderRadius: 8,
+    borderRadius: 6,
     alignItems: 'center',
   },
   secondaryBtn: {
@@ -368,12 +384,12 @@ const styles = StyleSheet.create({
     borderColor: '#c8bc9e',
   },
   modalBtnText: { color: '#fff', fontWeight: '700', fontSize: 15 },
-  secondaryBtnText: { color: '#1a1a2e' },
+  secondaryBtnText: { color: '#1C3A5C' },
   closeBtn: { marginTop: 16, alignSelf: 'center' },
   closeBtnText: { color: '#8a7a5c', fontSize: 14 },
 
   // Calendar Modal
-  calendarModal: { flex: 1, backgroundColor: '#fff' },
+  calendarModal: { flex: 1, backgroundColor: '#FAF6EC' },
   calendarHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -381,6 +397,11 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingTop: 60,
   },
-  calendarTitle: { fontSize: 20, fontWeight: '700', color: '#1a1a2e' },
-  closeCalendar: { fontSize: 24, color: '#666', padding: 8 },
+  calendarTitle: { 
+    fontSize: 25, 
+    fontWeight: '700', 
+    color: '#1C3A5C',
+    fontFamily: 'DancingScript_700Bold',
+   },
+  closeCalendar: { fontSize: 24, color: '#1C3A5C', padding: 8 },
 });

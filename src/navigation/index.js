@@ -5,9 +5,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from "@expo/vector-icons";
 
 
-import { Text } from 'react-native';
 
-
+import { ThemeProvider } from '../context/ThemeContext';
+import SubContextProvider from '../context/SubContext';
 import HomeScreen from '../screens/HomeScreen';
 import GratitudePromptScreen from '../screens/GratitudePromptScreen';
 import HistoryScreen from '../screens/HistoryScreen';
@@ -37,32 +37,23 @@ function TabNavigator() {
         name="Home"
         component={HomeScreen}
         
-        options={{ tabBarIcon: ({ color }) => <Text style={{ fontSize: 20 }}>
-            <Ionicons name="home-outline" size={24} color="#393939" />
-        </Text> }}
+        options={{ tabBarIcon: () => <Ionicons name="home-outline" size={24} color="#393939" /> }}
         
       />
       <Tab.Screen
         name="Journal"
         component={HistoryScreen}
-        options={{ tabBarIcon: ({ color }) => <Text style={{ fontSize: 20 }}>
-            <Ionicons name= "journal-outline" size={24} color="#393939" />
-        </Text> }}
+        options={{ tabBarIcon: () => <Ionicons name="journal-outline" size={24} color="#393939" /> }}
       />
       <Tab.Screen
         name="Stats"
         component={StatsScreen}
-        options={{ tabBarIcon: ({ color }) => <Text style={{ fontSize: 20 }}>
-             <Ionicons name= "stats-chart-outline" size={24} color="#393939" />
-
-        </Text> }}
+        options={{ tabBarIcon: () => <Ionicons name="stats-chart-outline" size={24} color="#393939" /> }}
       />
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}
-        options={{ tabBarIcon: ({ color }) => <Text style={{ fontSize: 20 }}>
-           <Ionicons name= "person-outline" size={24} color="#393939" />
-        </Text> }}
+        options={{ tabBarIcon: () => <Ionicons name="person-outline" size={24} color="#393939" /> }}
       />
     </Tab.Navigator>
   );
@@ -70,24 +61,34 @@ function TabNavigator() {
 
 const AppNavigator = forwardRef(function AppNavigator(props, ref) {
   return (
-    <NavigationContainer ref={ref}>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Main"
-          component={TabNavigator}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="GratitudePrompt"
-          component={GratitudePromptScreen}
-          options={{
-            presentation: 'transparentModal',
-            headerShown: false,
-            animation: 'fade',
-          }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+
+    <SubContextProvider>
+
+      <ThemeProvider>
+          <NavigationContainer ref={ref}>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="Main"
+              component={TabNavigator}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="GratitudePrompt"
+              component={GratitudePromptScreen}
+              options={{
+                presentation: 'transparentModal',
+                headerShown: false,
+                animation: 'fade',
+              }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+
+      </ThemeProvider>
+        
+
+    </SubContextProvider>
+ 
   );
 });
 

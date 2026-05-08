@@ -13,6 +13,7 @@ import EntryCard from '../components/EntryCard';
 import { getEntries, clearEntries, deleteEntry } from '../storage/entries';
 
 import { POIGNANT_QUOTES, getRandomQuote } from '../constants/quotes';
+import { useTheme } from '../context/ThemeContext';
 
 const FUN_FACTS = [
   "Practicing gratitude regularly can lower stress hormones by up to 23%.",
@@ -38,6 +39,7 @@ function normalizeDate(dateInput) {
 }
 
 export default function HomeScreen({ navigation }) {
+  const { bgColor } = useTheme();
   const [streak, setStreak] = useState(0);
   const [todayEntry, setTodayEntry] = useState(null);
   const [recentEntries, setRecentEntries] = useState([]);
@@ -80,8 +82,8 @@ export default function HomeScreen({ navigation }) {
       }
     }
     setStreak(s);
-    setRecentEntries(sorted.slice(0, 5));
-    const weekAgo = new Date();
+    setRecentEntries(sorted.slice(0, 3));
+    const weekAgo = new Date();s
     weekAgo.setDate(weekAgo.getDate() - 7);
     setWeekCount(entries.filter(e => new Date(e.date) >= weekAgo).length);
   }
@@ -145,9 +147,8 @@ export default function HomeScreen({ navigation }) {
       </View>
 
       <View style={styles.quoteWrap}>
-        <Text style={styles.quote}>
-          {quotes}
-        </Text>
+        <Text style={styles.quoteLabel}>Today's Quote</Text>
+        <Text style={styles.quote}>{quotes}</Text>
       </View>
 
       <View style={styles.recentHeader}>
@@ -173,7 +174,7 @@ export default function HomeScreen({ navigation }) {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: bgColor }]}>
       <FlatList
         data={recentEntries}
         keyExtractor={(item) => item.id}
@@ -198,7 +199,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 62,
     fontWeight: '800',
-    color: 'white',
+    color: '#FAF6EC',
     fontFamily: 'DancingScript_700Bold',
     marginTop: 20,
     marginBottom: 2,
@@ -263,12 +264,19 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     marginBottom: 32,
   },
+  quoteLabel: {
+    color: 'rgba(255,255,255,0.55)',
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 1.2,
+    textTransform: 'uppercase',
+    marginBottom: 8,
+  },
   quote: {
-    color: 'rgba(255,255,255,0.82)',
-    fontSize: 18,
+    color: 'rgba(255,255,255,0.88)',
+    fontSize: 16,
     fontStyle: 'italic',
-    lineHeight: 28,
-    letterSpacing: 0.2,
+    lineHeight: 26,
   },
   recentHeader: {
     flexDirection: 'row',
