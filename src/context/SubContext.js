@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import Purchases from 'react-native-purchases';
 
+const USE_MOCK_PURCHASES = true;
 
 const SubContext = createContext();
 
@@ -11,9 +12,9 @@ export default function SubContextProvider({children}){
     const [isUserPro, setIsUserPro ] = useState(false);
     const [loading, setLoading] = useState(false);
 
-  
-
     useEffect(() => {
+        if (USE_MOCK_PURCHASES) return;
+
         async function check() {
             setLoading(true);
             await Purchases.configure({ apiKey: 'test_zdImfIzYAHsffKIzQRlngAuYssa' });
@@ -28,7 +29,19 @@ export default function SubContextProvider({children}){
     // Purchase Pro
 
     async function purchasePro(){
-        
+        if (isUserPro) return { success: true };
+
+        setLoading(true);
+
+        try {
+            if (USE_MOCK_PURCHASES) {
+                await new Promise(resolve => setTimeout(resolve, 800));
+                setIsUserPro(true);
+                return { success: true };
+            }
+        } finally {
+            setLoading(false);
+        }
     }
 
     // 
