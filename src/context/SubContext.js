@@ -44,6 +44,17 @@ export default function SubContextProvider({children}){
         }
     }
 
+
+    async function restorePurchases(){
+
+        setLoading(true)
+        await Purchases.restorePurchases()
+        const customerInfo = await Purchases.getCustomerInfo();
+
+
+        
+    }
+
     // 
 
 
@@ -51,7 +62,7 @@ export default function SubContextProvider({children}){
     return(
 
 
-        <SubContext.Provider value={{isUserPro, loading}}>
+        <SubContext.Provider value={{isUserPro, loading, purchasePro, restorePurchases}}>
             {children}
         </SubContext.Provider>
 
